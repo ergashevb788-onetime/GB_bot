@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: cozy-productivity-bot
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python bot.py
+    envVars:
+      - key: BOT_TOKEN
+        sync: false         # Set manually in Render dashboard
+      - key: OWNER_CHAT_ID
+        sync: false         # Set manually in Render dashboard
+      - key: WEBHOOK_URL
+        sync: false         # Your Render URL e.g. https://cozy-productivity-bot.onrender.com
+      - key: PORT
+        value: 10000        # Render's default port
+      - key: DATABASE_URL
+        fromDatabase:       # Render auto-injects this when you link your PostgreSQL service
+          name: cozy-bot-db
+          property: connectionString
+
+databases:
+  - name: cozy-bot-db
+    databaseName: cozybot
+    plan: free              # Render free PostgreSQL tier
