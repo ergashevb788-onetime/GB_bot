@@ -29,7 +29,7 @@ class Settings:
             raise ValueError("DATABASE_URL is missing from environment variables.")
 
         owner_id    = os.getenv("OWNER_CHAT_ID", "0")
-        SPECIAL_USER_ID = int(os.getenv("SPECIAL_USER_ID", "0"))
+        special_user_id = int(os.getenv("SPECIAL_USER_ID", "0"))
         webhook_url = os.getenv("WEBHOOK_URL", "").rstrip("/")
         port        = int(os.getenv("PORT", "8080"))
 
