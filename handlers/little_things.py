@@ -21,6 +21,11 @@ router = Router()
 
 @router.message(F.text == "💌 Little Things")
 async def little_things(message: Message, state: FSMContext) -> None:
+    allowed = {settings.OWNER_CHAT_ID, settings.SPECIAL_USER_ID}
+    if message.from_user.id not in allowed:
+        await message.answer("This button is only for a certain person 🤍")
+        return
+
     await state.clear()
     await message.answer(
         "💌 A quiet corner for small joys\n\nWhat do you need right now?",
