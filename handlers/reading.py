@@ -97,7 +97,23 @@ async def add_book_callback(callback: CallbackQuery, state: FSMContext) -> None:
 
 @router.message(ReadingStates.waiting_for_new_book)
 async def receive_book_title(message: Message, state: FSMContext) -> None:
+    # All known button labels — if the user taps one instead of typing,
+    # catch it and ask again rather than saving it as a book title
+    BUTTON_LABELS = {
+        "➕ Update Progress", "💭 Save Quote", "📚 My Library",
+        "✨ Random Quote", "✅ Finish Book", "⏰ Reading Reminder",
+        "⬅ Back", "🌱 Habit Tracker", "💌 Little Things", "📚 Reading Space",
+    }
+
     title = message.text.strip()
+
+    if title in BUTTON_LABELS:
+        await message.answer(
+            "That looks like a button, not a book title 🌱\n\n"
+            "Type the name of the book you're reading:"
+        )
+        return   # Stay in waiting_for_new_book — don't clear state
+
     user_id = message.from_user.id
     book_id = await db.add_book(user_id, title)
 
@@ -108,7 +124,6 @@ async def receive_book_title(message: Message, state: FSMContext) -> None:
         parse_mode="HTML",
     )
     await state.set_state(ReadingStates.waiting_for_page)
-
 
 @router.message(ReadingStates.waiting_for_page)
 async def receive_page(message: Message, state: FSMContext) -> None:
