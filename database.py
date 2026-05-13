@@ -128,6 +128,12 @@ async def init_db() -> None:
                 reading_reminder BOOLEAN DEFAULT TRUE,
                 habit_reminder   BOOLEAN DEFAULT TRUE
             );
+            CREATE TABLE IF NOT EXISTS little_things_logs (
+                id         SERIAL PRIMARY KEY,
+                user_id    BIGINT NOT NULL REFERENCES users(user_id),
+                action     TEXT NOT NULL,
+                logged_at  TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
+           );
         """)
 
     logger.info("Database initialised ✨")
@@ -446,3 +452,17 @@ async def update_user_setting(user_id: int, key: str, value: int) -> None:
             f"UPDATE settings SET {key} = $1 WHERE user_id = $2",
             bool(value), user_id,
         )
+
+async def log_little_thing(user_id: int, action: str) -> None:
+    """Silently log a Little Things interaction. Never raises."""
+    try:
+        pool = _get_pool()
+        async with pool.acquire() as conn:
+            await conn.execute(
+                "INSERT INTO little_things_logs (user_id, action) VALUES ($1, $2)",
+                user_id, action,
+            )
+    except Exception as e:
+        logger.warning(f"little_things log failed: {e}")
+
+  
