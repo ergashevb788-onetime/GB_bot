@@ -25,13 +25,22 @@ def main_menu() -> ReplyKeyboardMarkup:
 
 
 # ─── Reading Space ────────────────────────────────────────────────────────────
-
+def finish_book_inline(book_id: int) -> InlineKeyboardMarkup:
+    return InlineKeyboardMarkup(
+        inline_keyboard=[
+            [
+                InlineKeyboardButton(text="✅ Yes, I finished it!", callback_data=f"finish_book:{book_id}"),
+                InlineKeyboardButton(text="📖 Still reading",      callback_data="still_reading"),
+            ]
+        ]
+    )
+    
 def reading_menu() -> ReplyKeyboardMarkup:
     return ReplyKeyboardMarkup(
         keyboard=[
             [KeyboardButton(text="➕ Update Progress"), KeyboardButton(text="💭 Save Quote")],
             [KeyboardButton(text="📚 My Library"),      KeyboardButton(text="✨ Random Quote")],
-            [KeyboardButton(text="⏰ Reading Reminder")],
+            [KeyboardButton(text="✅ Finish Book"),      KeyboardButton(text="⏰ Reading Reminder")],
             [KeyboardButton(text="⬅ Back")],
         ],
         resize_keyboard=True,
