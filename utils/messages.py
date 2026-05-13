@@ -53,13 +53,29 @@ mood_responses = {
 # ─── Hug Messages ────────────────────────────────────────────────────────────
 
 hug_messages = [
-    "Sending a warm virtual hug 🌙",
-    "You're doing better than you think ✨",
-    "Rest a little too 🌱",
-    "You're not alone in this. Keep going, gently 🤍",
-    "It's okay to be tired. You're still here ✨",
-    "Proud of you for every small thing today 🌙",
-    "One day at a time. You're doing it 🌱",
+    "I think it's a little too early for that 🌙",
+    
+    "Maybe one day))) ",
+    
+    "People say a person needs at least 5 hugs a day to stay healthy.\nI'm clearly not a very healthy person 😂",
+    
+    "The same here).",
+    
+    "Patience is a beautiful thing 🌱",
+    
+    "I'm waiting for that day too ... ",
+    
+    "Virtual hugs are all I can offer for now) ",
+    
+    "One day, maybe.",
+    
+    "Still buffering that feature...",
+    
+    "This button comes with emotional damage included :) ",
+    
+    "Pending delivery...",
+    
+    "I'd say yes if Telegram allowed it :) ",
 ]
 
 # ─── Comfort Messages ────────────────────────────────────────────────────────
