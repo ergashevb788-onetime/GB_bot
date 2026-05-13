@@ -13,6 +13,7 @@ from keyboards import little_things_menu, main_menu
 from utils.jokes import get_random_joke
 from utils.messages import random_hug, random_comfort
 from config import settings
+from database import log_little_thing
 
 router = Router()
 
@@ -37,13 +38,14 @@ async def little_things(message: Message, state: FSMContext) -> None:
 
 @router.message(F.text == "😂 Joke")
 async def send_joke(message: Message) -> None:
+    await log_little_thing(message.from_user.id, "joke")
     await message.answer(get_random_joke())
-
 
 # ─── I Miss You ───────────────────────────────────────────────────────────────
 
 @router.message(F.text == "🤍 I Miss You")
 async def i_miss_you(message: Message, bot: Bot) -> None:
+    await log_little_thing(message.from_user.id, "i_miss_you")
     user = message.from_user
     name = user.first_name or user.username or "Someone"
 
@@ -69,15 +71,17 @@ async def i_miss_you(message: Message, bot: Bot) -> None:
 
 @router.message(F.text == "🫂 Hug")
 async def send_hug(message: Message) -> None:
+    await log_little_thing(message.from_user.id, "hug")
     await message.answer(random_hug())
+
 
 
 # ─── Random Comfort ───────────────────────────────────────────────────────────
 
 @router.message(F.text == "✨ Random Comfort")
 async def send_comfort(message: Message) -> None:
+    await log_little_thing(message.from_user.id, "comfort")
     await message.answer(random_comfort())
-
 
 # ─── Back ─────────────────────────────────────────────────────────────────────
 
