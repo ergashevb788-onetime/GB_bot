@@ -3,7 +3,7 @@ config.py — Loads and validates environment variables.
 """
 
 import os
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -13,10 +13,10 @@ load_dotenv()
 class Settings:
     BOT_TOKEN: str
     OWNER_CHAT_ID: int
-    SPECIAL_USER_ID: int
     WEBHOOK_URL: str
     PORT: int
-    DATABASE_URL: str   # Added: PostgreSQL connection string
+    DATABASE_URL: str
+    SPECIAL_USER_ID: int = 0   # defaults to 0 if not set — never crashes
 
     @classmethod
     def from_env(cls) -> "Settings":
@@ -28,17 +28,13 @@ class Settings:
         if not database_url:
             raise ValueError("DATABASE_URL is missing from environment variables.")
 
-        owner_id    = os.getenv("OWNER_CHAT_ID", "0")
-        special_user_id = int(os.getenv("SPECIAL_USER_ID", "0"))
-        webhook_url = os.getenv("WEBHOOK_URL", "").rstrip("/")
-        port        = int(os.getenv("PORT", "8080"))
-
         return cls(
             BOT_TOKEN=bot_token,
-            OWNER_CHAT_ID=int(owner_id),
-            WEBHOOK_URL=webhook_url,
-            PORT=port,
+            OWNER_CHAT_ID=int(os.getenv("OWNER_CHAT_ID", "0")),
+            WEBHOOK_URL=os.getenv("WEBHOOK_URL", "").rstrip("/"),
+            PORT=int(os.getenv("PORT", "8080")),
             DATABASE_URL=database_url,
+            SPECIAL_USER_ID=int(os.getenv("SPECIAL_USER_ID", "0")),
         )
 
 
