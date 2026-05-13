@@ -111,14 +111,26 @@ async def receive_page(message: Message, state: FSMContext) -> None:
         return
 
     new_page = int(text)
-    user_id = message.from_user.id
-    data = await state.get_data()
-    book_id = data.get("book_id")
+    user_id  = message.from_user.id
+    data     = await state.get_data()
+    book_id  = data.get("book_id")
 
     pages_read = await db.update_book_page(user_id, book_id, new_page)
-    response = reading_progress_response(pages_read)
+    response   = reading_progress_response(pages_read)
 
-    await message.answer(response, reply_markup=reading_menu())
+    # Check if the user just hit the last page
+    book = await db.get_current_book(user_id)
+    if book and book["total_pages"] and new_page >= book["total_pages"]:
+        await message.answer(
+            f"{response}\n\n"
+            f"That's the last page of <i>{book['title']}</i> 📖\n"
+            "Did you finish it?",
+            reply_markup=finish_book_inline(book_id),
+            parse_mode="HTML",
+        )
+    else:
+        await message.answer(response, reply_markup=reading_menu())
+
     await state.clear()
 
 
