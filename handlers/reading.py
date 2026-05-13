@@ -166,6 +166,19 @@ async def save_quote_start(message: Message, state: FSMContext) -> None:
 
 @router.message(ReadingStates.waiting_for_quote)
 async def receive_quote_text(message: Message, state: FSMContext) -> None:
+    BUTTON_LABELS = {
+        "➕ Update Progress", "💭 Save Quote", "📚 My Library",
+        "✨ Random Quote", "✅ Finish Book", "⏰ Reading Reminder",
+        "⬅ Back", "🌱 Habit Tracker", "💌 Little Things", "📚 Reading Space",
+    }
+
+    if message.text.strip() in BUTTON_LABELS:
+        await message.answer(
+            "That looks like a button, not a quote 🌱\n\n"
+            "Type or paste the quote you'd like to save:"
+        )
+        return
+
     await state.update_data(quote_text=message.text.strip())
     await message.answer(
         "Which book is it from? (or just press /skip to save without a book name)"
@@ -175,6 +188,19 @@ async def receive_quote_text(message: Message, state: FSMContext) -> None:
 
 @router.message(ReadingStates.waiting_for_quote_book)
 async def receive_quote_book(message: Message, state: FSMContext) -> None:
+    BUTTON_LABELS = {
+        "➕ Update Progress", "💭 Save Quote", "📚 My Library",
+        "✨ Random Quote", "✅ Finish Book", "⏰ Reading Reminder",
+        "⬅ Back", "🌱 Habit Tracker", "💌 Little Things", "📚 Reading Space",
+    }
+
+    if message.text.strip() in BUTTON_LABELS:
+        await message.answer(
+            "That looks like a button 🌱\n\n"
+            "Type the book name, or send /skip to save without one:"
+        )
+        return
+
     data = await state.get_data()
     quote_text = data["quote_text"]
     book_name = None if message.text.strip().lower() in ("/skip", "skip") else message.text.strip()
