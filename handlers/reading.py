@@ -17,6 +17,13 @@ from keyboards import (
 )
 from utils.quotes import get_random_quote
 from utils.messages import reading_progress_response
+from keyboards import (
+    reading_menu,
+    main_menu,
+    reading_reminder_inline,
+    add_book_inline,
+    finish_book_inline,       # ← add this line
+)
 
 router = Router()
 
@@ -228,6 +235,52 @@ async def toggle_reading_reminder(callback: CallbackQuery) -> None:
         f"Reading reminder {status} ✨",
         reply_markup=reading_reminder_inline(bool(new_value)),
     )
+    await callback.answer()
+
+# ─── Finish Book ─────────────────────────────────────────────────────────────
+
+@router.message(F.text == "✅ Finish Book")
+async def finish_book_manual(message: Message) -> None:
+    user_id = message.from_user.id
+    book    = await db.get_current_book(user_id)
+
+    if not book:
+        await message.answer(
+            "No book in progress right now 📖\n\nStart one via ➕ Update Progress.",
+            reply_markup=reading_menu(),
+        )
+        return
+
+    await message.answer(
+        f"Mark <i>{book['title']}</i> as finished?",
+        reply_markup=finish_book_inline(book["id"]),
+        parse_mode="HTML",
+    )
+
+
+@router.callback_query(F.data.startswith("finish_book:"))
+async def confirm_finish_book(callback: CallbackQuery) -> None:
+    book_id = int(callback.data.split(":")[1])
+    user_id = callback.from_user.id
+
+    # Get title before marking finished (for the message)
+    book = await db.get_current_book(user_id)
+    title = book["title"] if book else "your book"
+
+    await db.finish_book(user_id, book_id)
+
+    await callback.message.edit_text(
+        f"✨ You finished <i>{title}</i>!\n\n"
+        "It's now in your finished shelf 📚\n"
+        "What would you like to read next?",
+        parse_mode="HTML",
+    )
+    await callback.answer()
+
+
+@router.callback_query(F.data == "still_reading")
+async def still_reading(callback: CallbackQuery) -> None:
+    await callback.message.edit_text("No rush 📖 Your book will wait for you ✨")
     await callback.answer()
 
 
