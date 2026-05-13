@@ -47,15 +47,19 @@ async def i_miss_you(message: Message, bot: Bot) -> None:
     user = message.from_user
     name = user.first_name or user.username or "Someone"
 
-    # Notify the owner
     if settings.OWNER_CHAT_ID and settings.OWNER_CHAT_ID != 0:
         try:
+            from datetime import datetime
+            now = datetime.now().strftime("%Y-%m-%d %H:%M")
+            username = f"@{user.username}" if user.username else "no username"
+
             await bot.send_message(
                 settings.OWNER_CHAT_ID,
-                f"{name} pressed the 'I Miss You' button 🤍",
+                f"🤍 I Miss You\n\n"
+                f"👤 {name} ({username})\n"
+                f"🕐 {now}",
             )
         except Exception:
-            # Don't let a notification failure affect the user
             pass
 
     await message.answer("Message delivered ✨")
