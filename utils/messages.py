@@ -81,16 +81,31 @@ hug_messages = [
 # ─── Comfort Messages ────────────────────────────────────────────────────────
 
 comfort_messages = [
-    "Your pace is still progress.",
-    "One difficult day doesn't define you.",
-    "Drink some water and continue slowly 🌱",
-    "Small consistent steps matter more than perfect days 🌱",
-    "You don't have to have it all figured out today ✨",
-    "Rest is also part of the process 🌙",
-    "Being kind to yourself is productive too.",
-    "It's okay if today was just surviving. That counts 🌱",
-    "Tomorrow is a fresh page ✨",
-    "You showed up. That's already something.",
+    "In a room full of art, I would still look at you.",
+
+    "I passed by many eyes, but I only got lost in yours.",
+
+    "If you remember me, then I don’t care if everyone else forgets.",
+
+    "If I had a flower for every time I thought of you, I could walk through my garden forever.",
+
+    "Once upon a time, there was a boy who loved a girl, and her laughter was a question he wanted to spend his whole life answering.",
+
+    "Math is so confusing. It only talks about X and Y, but never U and I.",
+
+    "My heart missed you.",
+
+    "I know what love is because of you.",
+
+    "On the train, we swapped seats. You wanted the window, and I wanted to look at you.",
+
+    "I closed my mouth and talked to you in hundreds of silent ways.",
+
+    "There are hundreds of ways to say 'I missed you' without using words.",
+
+    "The window view was beautiful.\nStill not as distracting as you.",
+
+    "Sometimes I reread old conversations just to smile again.",
 ]
 
 # ─── Helper functions ─────────────────────────────────────────────────────────
